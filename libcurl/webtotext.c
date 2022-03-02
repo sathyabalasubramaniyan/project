@@ -131,6 +131,7 @@ static size_t file_fwrite(void *buffer, size_t size, size_t nmemb, void *stream)
                 }
          }
 
-         return fwrite(buffer, size, nmemb, out->stream); //if stream is not empty 
+         return fwrite(buffer, size, nmemb, out->stream); 
+	  //if stream is not empty 
          //fwrite writes the array of  elements pointed by buffer of size (size(bytes)*nmen(no of elements))  in location pointed by out->stream
 } 
