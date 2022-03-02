@@ -16,18 +16,6 @@ struct fileptr {
 	FILE *stream;
 };
 
-static size_t file_fwrite(void *buffer, size_t size, size_t nmemb, void *stream) {
-	struct fileptr *out=(struct fileptr *)stream;
-
-	if(out && !out->stream) {
-		/* open file for writing */
-		out->stream = fopen(out->filename, "wb");
-		if(!out->stream)
-			return -1; /* failure, can't open file to write */
-	}
-	return fwrite(buffer, size, nmemb, out->stream);
-}
-
 int curl_download_file_to_directory(char *url, char *filename) {
 	CURL *curl = NULL;
 	CURLcode res;
@@ -43,25 +31,7 @@ int curl_download_file_to_directory(char *url, char *filename) {
 		file.filename = filename;
 		file.stream = NULL;
 
-		/* Define our callback to get called when there's data to be written */
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, file_fwrite);
-		/* Set a pointer to our struct to pass to the callback */
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &file);
-
-		/* Switch on full protocol/debug output */
-		curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-
-		res = curl_easy_perform(curl);
-
-		/* always cleanup */
-		curl_easy_cleanup(curl);
-		if(CURLE_OK != res) {
-			/* we failed */
-			fprintf(stderr, "curl told us %d\n", res);
-			if(file.stream)
-				fclose(file.stream); /* close the local file */
-			return -1;
-		}
+		
 	}
 
 	if(file.stream)
