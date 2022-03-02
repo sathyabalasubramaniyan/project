@@ -45,5 +45,6 @@ int curl_download_file_to_directory(char *url, char *filename) {
 int main(int argc, char **argv) {
 	curl_download_file_to_directory("https://www.google.com/","/home/user/Desktop/curlex/google.html");
 	return 0;
+
 }
 
