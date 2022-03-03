@@ -10,6 +10,7 @@
 #include <sys/mount.h>
 #include <openssl/md5.h>
 #include <curl/curl.h>
+#include<ctype.h>
 
 #define MAX_WORDS 1000
 
@@ -29,7 +30,7 @@ int main(int argc, char **argv)
 {
         
         char *path;
-        path="/home/user/Desktop/curlex/test3.html"; //path of the file to be downloaded
+        path="/home/user/Desktop/curlex/test4.html"; //path of the file to be downloaded
 	webpage_to_text("https://www.example.com/",path);//address of the path
         // it downloads  html file   of webpage
         readfile(path);     
@@ -37,9 +38,11 @@ int main(int argc, char **argv)
 }
 void readfile(char *filename)//to read the  saved data 
 {
-    int flag=0;
+    int body=0,tag=1;
     FILE *fptr;
-    char arr[MAX_WORDS];
+    char arr[MAX_WORDS],arr2[MAX_WORDS];
+    char *p;
+    int i=0,j=0,l=0;
     char *word = (char*)malloc(40);
     fptr = fopen(filename, "r");
     if (fptr == NULL)
@@ -48,31 +51,109 @@ void readfile(char *filename)//to read the  saved data
     }
     else
     {
-     printf("\nok");
-    for (int i=0; i<MAX_WORDS;i++) //initialise the  char array to store the occurences of the word
+     printf("\nFILE IS OPENED\n");
+    for (int i=0; i<MAX_WORDS;i++) 
     {
         arr[i] = 0;
     }
     while(1)
-    {
+    {   
         if(fscanf(fptr, "%s", word) == EOF)
         { 
         break;
         }
-        if(flag==1)
+        if(body==1)
+       {
+        if(strstr(word,"<"))
         {
-        printf("%s",word); //print only data in body tag
+          if(strstr(word,"</p>"))
+           {
+            //printf("  paraend\t");
+            p=strstr(word,"</p>");
+            for(i=0;word[i]!=*p;i++)
+            {
+            arr2[i]=word[i];
+            }
+            arr2[i]='\0';
+            printf("\narr: %s , %d",arr2,i);
+           // p=strstr(word,"</p>");           //  printf("%s\t",p);
+           for (int i=0; i<MAX_WORDS;i++) 
+           {
+           arr2[i] = 0;
+          }
         }
+        else if(strstr(word,"<p>"))
+         {
+          printf("parenstart");
+          p=strstr(word,"<p>");
+          printf("\n%s\n",word);
+          for( j=0;word[j]!='>';j++)
+          {
+          printf("num:%d\n",j);
+          }
+          printf("num:%d,%c\n",j,word[j]);
+          while(isalpha(word[++j]))
+          {
+           printf("num:%d,%c\n",j,word[j]);
+           arr2[l]=word[j];
+           l++;
+           }
+         arr2[l]='\0';
+         printf("\narr: %s , %d",arr2,l);
+          for (int i=0; i<MAX_WORDS;i++) 
+          {
+           arr2[i] = 0;
+          }
+         }
+        else if(strstr(word,"</h"))
+        {
+        // printf("  h1end\t");
+         p=strstr(word,"</h");
+         for(i=0;word[i]!=*p;i++)
+         {
+           arr2[i]=word[i];
+         }
+         arr2[i]='\0';
+          printf("\narr: %s , %d",arr2,i);
+         // p=strstr(word,"</p>");
+        //  printf("%s\t",p);
+           for (int i=0; i<MAX_WORDS;i++)
+            {
+           arr2[i] = 0;
+           }
+           i=0;
+        }
+         else if(strstr(word,"<h"))
+         {
+ //        printf("parenstart");
+   //      p=strstr(word,"<h");
+     //    printf("%s\t",p);
+         for(j=0;word[j]!='>';j++);
+          while(word[++j]!='\n')
+          {
+           arr2[l]=word[j];
+           l++;
+           }
+         arr2[l]='\0';
+         printf("\narr: %s %d",arr2,i);
+         for (int i=0; i<MAX_WORDS;i++) 
+          {
+           arr2[i] = 0;
+          }
+         }
+       }//tag
+      else{
+       printf("%s\n",word);
+       }
+       }//body
 
-       if(strstr(word,"</head>"))//ignore the metadata
-        {
-          printf("\n\n\t");
-          flag=1;
-        }
-    }
-    printf("\n");
-}
-}        
+        if(strstr(word,"</head>"))//ignore the metadata
+        { 
+          body=1;
+                }
+   }//while
+  }//elseend
+} 
 
 int webpage_to_text(char *url, char *filename) 
 {
@@ -131,7 +212,6 @@ static size_t file_fwrite(void *buffer, size_t size, size_t nmemb, void *stream)
                 }
          }
 
-         return fwrite(buffer, size, nmemb, out->stream); 
-	  //if stream is not empty 
+         return fwrite(buffer, size, nmemb, out->stream); //if stream is not empty 
          //fwrite writes the array of  elements pointed by buffer of size (size(bytes)*nmen(no of elements))  in location pointed by out->stream
 } 
