@@ -279,10 +279,10 @@ void wordsintofile(void)
 void occurences(char *path)
 {
     FILE *fptr2;
-    int  i,len,index,flag,k,j;
+    int  n,i,len,index,flag,k,j,a,b;
     char result[MAXLEN][30];//two dimensional array
     char word[30],word2[30];
-    int  count[MAXLEN];
+    int  count[MAXLEN],arr[MAXLEN];
     fptr2= fopen(path, "r");//open the file in read mode
     if (fptr2 == NULL)//error
     {
@@ -294,19 +294,19 @@ void occurences(char *path)
         count[i] = 0;
     }
    index = 0;
-   while (fscanf(fptr2, "%s", word) != EOF)//get each line of a file in char array word
+   while (fscanf(fptr2, "%s", word2) != EOF)//get each line of a file in char array word
    {
-      // printf("word:%s",word2);
-      // j=0;
-      // k=0;
-      // len = strlen(word2);//length of the word
-      // printf("\tlen: %d",len);
-       //while(len--)
-       // {
-    //   word[j++]=tolower(word2[k++]);}
-      //  printf("len%d",len);
-      //x  word[j]='\0';
-       // printf("work :%s\n",word);
+        // printf("%s",word2);
+        len=strlen(word2);
+        i=0;
+        while(len--)
+        {
+        word[i]=tolower(word2[i]);//it converts into lowercase 
+        i++;
+        }
+        word[i]='\0';
+        // printf("\t%s",word);
+        //printf("\n");
         flag=1;
         for (i=0;i<index &&(flag==1);i++)//loop until flag sets to 0 and i greater than index
         {
@@ -325,13 +325,41 @@ void occurences(char *path)
         {
             count[i - 1]++;//increment the count of index of the result array
         }
+       
     }
     fclose(fptr2);//closes the file
-    printf("\n");
-    for (i=0; i<index; i++)
-    {
-        printf("%-20s => %d\n", result[i], count[i]);
-    }
- 
-   return;
+   //    for (i=0; i<index; i++)
+   //  {
+    //    printf("%-20s => %d\n", result[i], count[i]);
+   // }
+    for(i=0;i<index;i++)
+     {
+     arr[i]=i;//store the  index value into array 
+     }
+     for (i = 0;i<index;++i)
+     {
+        for (j=i+1;j<index;++j)
+        {
+          if (count[i]<count[j])//if the count of array is greater , swap the numbers and also their index values
+          {
+               a=count[i];
+               b=arr[i];
+               count[i]=count[j];
+               count[j]=a;
+               arr[i]=arr[j];//it swaps the index value
+               arr[j]=b;
+            }
+            // for (int k = 0; k < n; ++k)
+           //  {
+            // printf("%d\n", arr[k]);
+            // }
+            // printf("\n");
+         }
+      }
+      printf("\nTHE WORDS ARE RANKED  ACCORDING TO THE OCCURENCES\n");
+      for (i = 0; i < index; ++i) //it prints the value as order in arr[i]
+      {
+           printf("%-20s==> %d\n",result[arr[i]],count[i]);
+      }
+      return;
 }
