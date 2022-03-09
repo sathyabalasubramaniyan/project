@@ -359,7 +359,7 @@ void occurences(char *path)
       printf("\nTHE WORDS ARE RANKED  ACCORDING TO THE OCCURENCES\n");
       for (i = 0; i < index; ++i) //it prints the value as order in arr[i]
       {
-           printf("%-20s==> %d\n",result[arr[i]],count[i]);
+           printf("%-20s=> %d\n",result[arr[i]],count[i]);
       }
       return;
 }
