@@ -1,4 +1,4 @@
-
+//command name give link and run the file
 //headerfiles
 #include <stdio.h>
 #include <string.h>
@@ -44,11 +44,6 @@ int main(int argc, char **argv)
         }
         path="/home/user/Desktop/test13.html"; //path of the file to be downloaded
         webpage_to_text(link,path);
-//"https://www.geeksforgeeks.org/",path);
-//"https://www.restapitutorial.com/",path);
-//"https://realpython.github.io/fake-jobs/",path);
-//"https://www.tutorialspoint.com/c_standard_library/c_function_fputs.htm",path);
-///https://www.tutorialspoint.com/c_standard_library/index.html",path);//https://www.example.com/",path);//address of the path
         // it downloads  html file   of webpage
         readfile(path);//it stores displayed words in website
       	return 0;
