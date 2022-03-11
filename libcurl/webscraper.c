@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 {
         char *path;
         path="/home/user/Desktop/test12.html"; //path of the file to be downloaded
-	webpage_to_text("https://www.amazon.in/",path);//"https://codedamn-classrooms.github.io/webscraper-python-codedamn-classroom-website/",path);//https://www.tutorialspoint.com/c_standard_library/index.htm",path);//https://www.example.com/",path);//address of the path
+	webpage_to_text("https://www.amazon.in/",path);//address of the path
         // it downloads  html file   of webpage
         readfile(path);//it stores displayed words in website
       	return 0;
