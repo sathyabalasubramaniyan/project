@@ -123,7 +123,7 @@ latest	1
 bell	1
 telephone	1
 laboratories	1
-×	1
+Ã—	1
 develop	1
 unix	1
 operating	1
@@ -256,4 +256,5 @@ using	1
 website	1
 ctype.h	1
 learn	1
-�	1
+ÿ	1
+
